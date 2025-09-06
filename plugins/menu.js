@@ -1,7 +1,3 @@
-// Script Ori By BochilGaming
-// Ditulis Ulang Oleh ImYanXiao
-// Disesuaikan Oleh ShirokamiRyzen
-
 import { promises } from 'fs'
 import { join } from 'path'
 import { xpRange } from '../lib/levelling.js'
@@ -123,7 +119,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname, args, command }) => {
     let name = await conn.getName(m.sender)
     let premium = global.db.data.users[m.sender].premiumTime
     let prems = `${premium > 0 ? 'Premium' : 'Free'}`
-    let sysPlatform = getPlatform() // ✅ Fix disini
+    let sysPlatform = getPlatform() 
 
     let totalreg = Object.keys(global.db.data.users).length
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
