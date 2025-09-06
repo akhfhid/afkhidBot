@@ -25,13 +25,13 @@
         "MD",
         "baileys-md"
     ],
-    "homepage": "https://github.com/ShirokamiRyzenRyzumiMD-ESM",
+    "homepage": "https://github.com/akhfhid/afkhidBot",
     "author": {
         "name": "Affan Khulafa"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ShirokamiRyzenRyzumiMD-ESM.git"
+        "url": "git+https://github.com/akhfhid/afkhidBot.git"
     },
     "bugs": {
         "url": "https://github.com/ShirokamiRyzenRyzumiMD-ESM/issues"

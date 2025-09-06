@@ -8,6 +8,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!/image\/(jpe?g|png)/.test(mime)) throw `_*Mime ${mime} tidak didukung!*_`
     let img = await q.download()
     let url = await uploadPomf(img)
+    let affan = 'owener: @Affan_gh ganteng :)'
     let meme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas ? atas : '')}/${encodeURIComponent(bawah ? bawah : '')}.png?background=${url}`;
     conn.sendSticker(m.chat, meme, m)
 }
