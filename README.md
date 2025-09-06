@@ -5,7 +5,7 @@
 
 </p>
 <p align="center">
-<a href="https://github.com/akhfhid"><img title="Author" src="https://img.shields.io/badge/AUTHOR-ShirokamiRyzen-green.svg?style=for-the-badge&logo=github"></a>
+<a href="https://github.com/akhfhid"><img title="Author" "></a>
 
 ##
 [![BOT WHATSAPP](https://img.shields.io/badge/WhatsApp%20BOT-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://api.whatsapp.com/send/?phone=6285944604471&text=.menu)
