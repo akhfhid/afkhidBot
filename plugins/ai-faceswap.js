@@ -11,7 +11,7 @@ let handler = async (m, { conn, args }) => {
         if (!media) throw 'Gagal mendownload media!'
         let cdnResult = await ryzenCDN(media)
         let url = cdnResult.url || cdnResult
-        if (!url) throw 'Gagal upload ke RyzenCDN!'
+        if (!url) throw 'Gagal upload ke API!'
         m.reply(wait)
 
         let response = await axios.get(`${APIs.ryzumi}/api/ai/faceswap`, {
