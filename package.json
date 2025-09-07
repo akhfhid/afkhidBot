@@ -34,7 +34,7 @@
         "url": "git+https://github.com/akhfhid/afkhidBot.git"
     },
     "bugs": {
-        "url": "https://github.com/ShirokamiRyzenRyzumiMD-ESM/issues"
+        "url": "https://github.com/akhfhid/afkhidBot/issues"
     },
     "license": "GPL-3.0-or-later",
     "dependencies": {
