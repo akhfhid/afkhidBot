@@ -1,8 +1,8 @@
 /*
-Author : Shirokami Ryzen 
-WA : +6285174269046
+Author : Akhfhid 
+WA : +6285944604471
 Base : Elaina-MultiDevice
-Release : 22 Nov 2022
+Release : Unrelease
 */
 
 import { watchFile, unwatchFile } from 'fs'
@@ -40,29 +40,29 @@ global.nomorown = '6289530377010'
 /*============= WATERMARK =============*/
 global.readMore = readMore
 global.author = 'Affan Kh'
-global.namebot = 'afkhidbot'
-global.wm = '© Ryzumi-MD By Affan Kh'
+global.namebot = 'afkhid'
+global.wm = '© Afkhid By Affan Kh'
 global.watermark = wm
 global.botdate = `⫹⫺ DATE: ${week} ${date}\n⫹⫺ 𝗧𝗶𝗺𝗲: ${wktuwib}`
 global.bottime = `T I M E : ${wktuwib}`
-global.stickpack = `Sticker Dibuat dengan ${namebot}\ngithub.com/ShirokamiRyzen\n\nRyzumi-MD ESM\n+${nomorbot}`
-global.stickauth = `© Ryzumi-MD By Shirokami Ryzen`
+global.stickpack = `Sticker Dibuat dengan ${namebot}\ngithub.com/akhfhid\n\nafkhidbot\n+${nomorbot}`
+global.stickauth = `© afkhid By Affan Khulafa`
 global.week = `${week} ${date}`
 global.wibb = `${wktuwib}`
 
 /*============== SOCIAL ==============*/
-global.sig = 'https://www.instagram.com/fatih_frdaus'
-global.sgh = 'https://github.com/ShirokamiRyzen'
-global.sgc = 'https://whatsapp.com/channel/0029Vb2qO9Q5vKAGd2t7ap1F'
+global.sig = 'https://www.instagram.com/aff4n__'
+global.sgh = 'https://github.com/akhfhid'
+global.sgc = 'https://whatsapp.com/channel/0029VbAaqLO2phHUi9oL7G1P'
 global.sgw = 'https://ryzumi.vip'
 global.sdc = '-'
-global.sfb = 'https://www.facebook.com/Nao.Tomori.UwU'
-global.snh = 'https://www.instagram.com/fatih_frdaus'
+global.sfb = 'https://www.facebook.com/affan.khulahafa'
+global.snh = 'https://www.instagram.com/aff4n__'
 
 /*============== PAYMENT ==============*/
-global.pdana = '085174269046'
-global.qris = 'https://api.ryzumi.vip/images/qris.png'
-global.psaweria = 'https://saweria.co/shirokamiryzen'
+global.pdana = '085798731153'
+global.qris = 'https://saweria.co/widgets/qr?streamKey=340d50c1925de99905b3c944beb36754'
+global.psaweria = 'https://saweria.co/afkhid'
 
 /*============= RESPON =============*/
 global.wait = 'Please Wait...'
@@ -80,9 +80,9 @@ global.APIKeys = {
 }
 
 
-global.thumb = 'https://telegra.ph/file/cce9ab4551f7150f1970d.jpg' 
+global.thumb = 'https://telegra.ph/file/cce9ab4551f7150f1970d.jpg'
 global.thumb2 = 'https://telegra.ph/file/26b515d170f1e599f78a7.jpg'
-global.thumbbc = 'https://telegra.ph/file/05f874dc87f7e27fa8127.jpg' 
+global.thumbbc = 'https://telegra.ph/file/05f874dc87f7e27fa8127.jpg'
 global.giflogo = 'https://telegra.ph/file/a46ab7fa39338b1f54d5a.mp4'
 global.thumblvlup = 'https://telegra.ph/file/a3e66e0fa840b08236c75.jpg'
 
