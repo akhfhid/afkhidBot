@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 
 const handler = async (m, { conn, args, command, usedPrefix }) => {
-    if (args.length < 1) throw `> Silakan berikan URL SlideShare\n\nContoh: \n*${usedPrefix + command} LINKNYA*\n*${usedPrefix + command} https://www.slideshare.net/StevanyStevany/materi-lengkap-tentang-power-point*`
+    if (args.length < 1) throw `> Silakan berikan URL SlideShare\n\nContoh: \n*${usedPrefix + command} Linknya*\n*${usedPrefix + command} https://www.slideshare.net/StevanyStevany/materi-lengkap-tentang-power-point*`
     
     const url = args[0];
     const filetypes = ['pdf', 'pptx'];

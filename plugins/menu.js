@@ -211,7 +211,7 @@ let handler = async (m, { conn, usedPrefix: _p, __dirname, args, command }) => {
           mediaType: 1,
           previewType: 0,
           renderLargerThumbnail: true,
-          thumbnailUrl: 'https://raw.githubusercontent.com/akhfhid/afkhidBot/refs/heads/main/thumbnail.jpg',
+          thumbnailUrl: 'https://iili.io/KIHL4QR.th.png',
           sourceUrl: sgc,
         }
       }
