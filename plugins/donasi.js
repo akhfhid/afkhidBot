@@ -1,5 +1,5 @@
 let handler = async (m) => {
-  let gambar = 'https://api.ryzumi.vip/images/qris.png'
+  let gambar = 'https://saweria.co/widgets/qr?streamKey=340d50c1925de99905b3c944beb36754'
   //let saweria = global.psaweria
   let qris = global.qris
   let numberowner = global.nomorown
