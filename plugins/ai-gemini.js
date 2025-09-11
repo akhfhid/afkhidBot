@@ -1,5 +1,5 @@
 import fetch from "node-fetch"
-import { ryzenCDN } from '../lib/uploadFile.js'
+import { akhfhidCDN } from '../lib/uploadFile.js'
 
 const handler = async (m, { text, usedPrefix, command, conn }) => {
   try {
@@ -13,7 +13,7 @@ const handler = async (m, { text, usedPrefix, command, conn }) => {
       let img = await m.quoted.download();
       if (img) {
         img = Buffer.from(img);
-        let link = await ryzenCDN(img);
+        let link = await akhfhidCDN(img);
         if (!link) throw 'Gagal mengupload gambar';
         imgUrl = typeof link === 'object' ? link.url : link;
       }
@@ -21,7 +21,7 @@ const handler = async (m, { text, usedPrefix, command, conn }) => {
       let img = await m.download();
       if (img) {
         img = Buffer.from(img);
-        let link = await ryzenCDN(img);
+        let link = await akhfhidCDN(img);
         if (!link) throw 'Gagal mengupload gambar';
         imgUrl = typeof link === 'object' ? link.url : link;
       }
