@@ -26,7 +26,7 @@ handler.command = /^spam(wa)?$/i
 
 handler.register = true
 handler.group = false
-handler.owner = true
+handler.owner = false
 handler.private = true
 handler.limit = 10
 
