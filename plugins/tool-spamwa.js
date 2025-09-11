@@ -6,12 +6,11 @@ let handler = async (m, { conn, text }) => {
 
     let fixedNumber = nomor.replace(/[-+<>@]/g, '').replace(/ +/g, '').replace(/^[0]/g, '62') + '@s.whatsapp.net'
     let fixedJumlah = jumlah ? jumlah * 1 : 10
-    if (fixedJumlah > 50) throw '*Maks 50 Pesan*'
+    if (fixedJumlah > 1000) throw 'Jumlah maksimal 1000'
     
     await m.reply(`*Spam Success To That Number*\nEstimated Sent All *${fixedJumlah}*`)
-    
     for (let i = 0; i < fixedJumlah; i++) {
-        let teks = `${pesan.trim()}\n\n[${i + 1}/${fixedJumlah}]`; // Tambahkan informasi iterasi dalam pesan
+        let teks = `${pesan.trim()}\n\n[${i + 1}/${fixedJumlah}]`; 
         await conn.relayMessage(fixedNumber, {
             text: teks,
             extendedTextMessage: {
