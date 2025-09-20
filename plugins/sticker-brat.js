@@ -3,6 +3,10 @@ import fetch from 'node-fetch'
 let handler = async (m, { conn, command, text }) => {
   if (!text || !text.trim()) throw 'Masukkan teks yang valid!'
 
+  // m.reply(wait)
+  // let res = await fetch(APIs.ryzumi + '/api/image/brat?text=' + encodeURIComponent(text.trim()))
+  // if (!res.ok) throw await res.text()
+
   try {
     let end = '/api/image/brat?text='
     if (/vid|video/i.test(command)) {
