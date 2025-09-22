@@ -1,80 +1,103 @@
-// Don't delete this credit!!!
-// Script by ShirokamiRyzen
-
-import axios from 'axios'
-import { exec } from 'child_process'
-import fs from 'fs/promises'
-import path from 'path'
+import axios from "axios";
+import { spawn } from "child_process";
+import fs from "fs/promises";
+import path from "path";
 
 let handler = async (m, { conn, args }) => {
-    if (!args[0]) throw 'Please provide a BiliBili video URL';
-    const sender = m.sender.split('@')[0];
-    const url = args[0];
+    if (!args[0]) {
+        return await conn.sendMessage(
+            m.chat,
+            { text: "Sertakan URL/Link video BiliBili!" },
+            { quoted: m }
+        );
+    }
 
-    m.reply(wait);
+    const sender = m.sender.split("@")[0];
+    const url = args[0];
+    await conn.sendMessage(
+        m.chat,
+        {
+            text: "⏳ Proses download video sedang berlangsung. Mohon untuk menunggu hingga proses selesai. Status selanjutnya akan diinformasikan.",
+        },
+        { quoted: m }
+    );
 
     try {
-        const { data } = await axios.get(`${APIs.ryzumi}/api/downloader/bilibili?url=${encodeURIComponent(url)}`);
+        const { data } = await axios.get(
+            `${APIs.ryzumi}/api/downloader/bilibili?url=${encodeURIComponent(url)}`
+        );
 
-        if (!data.status || !data.data || !data.data.mediaList || !data.data.mediaList.videoList || data.data.mediaList.videoList.length === 0) {
-            throw 'No available video found';
+        if (!data.status || !data.data?.mediaList?.videoList?.length) {
+            throw " Tidak ditemukan video yang tersedia!";
         }
-
         const video = data.data.mediaList.videoList[0];
-        const title = data.data.title || "Video";
-        const views = data.data.views || "0";
-        const likes = data.data.like || "0";
+        const videoUrl = video.url;
+        const tempFilePath = path.join("/tmp", `${video.filename || "video"}.mp4`);
+        const outputFilePath = path.join(
+            "/tmp",
+            `${video.filename || "video"}_fixed.mp4`
+        );
+        const writer = (await import("fs")).createWriteStream(tempFilePath);
+        const response = await axios.get(videoUrl, { responseType: "stream" });
+        response.data.pipe(writer);
 
-        if (video.url) {
-            const videoBuffer = await axios.get(video.url, { responseType: 'arraybuffer' }).then(res => res.data);
-            const tempFilePath = path.join('/tmp', `${video.filename || 'video'}.mp4`);
-            const outputFilePath = path.join('/tmp', `${video.filename || 'video'}_fixed.mp4`);
+        await new Promise((resolve, reject) => {
+            writer.on("finish", resolve);
+            writer.on("error", reject);
+        });
 
-            // Write the video buffer to a temporary file
-            await fs.writeFile(tempFilePath, videoBuffer);
+        // Informasi awal proses pengolahan video
+        await conn.sendMessage(
+            m.chat,
+            {
+                text: "⚙️ Memulai proses pengolahan video. Mohon tetap menunggu hingga video siap dikirim.",
+            },
+            { quoted: m }
+        );
 
-            // Use ffmpeg command to copy the video without re-encoding
-            await new Promise((resolve, reject) => {
-                exec(`ffmpeg -i ${tempFilePath} -c copy ${outputFilePath}`, (error) => {
-                    if (error) reject(error);
-                    else resolve();
-                });
-            });
+        await new Promise((resolve, reject) => {
+            const ff = spawn("ffmpeg", [
+                "-i",
+                tempFilePath,
+                "-c",
+                "copy",
+                outputFilePath,
+                "-y",
+            ]);
+            ff.stderr.on("data", () => { }); 
+            ff.on("close", resolve);
+            ff.on("error", reject);
+        });
 
-            const caption = `Ini videonya kak @${sender}!\n\n*Judul:* ${title}\n*Ditonton:* ${views}\n*Suka:* ${likes}`;
+        const fixedVideoBuffer = await fs.readFile(outputFilePath);
+        await conn.sendMessage(
+            m.chat,
+            {
+                video: fixedVideoBuffer,
+                mimetype: "video/mp4",
+                fileName: video.filename || "video.mp4",
+                caption: `🎬 Video BiliBili untuk @${sender}\n© By Afkhidbot`,
+                mentions: [m.sender],
+            },
+            { quoted: m }
+        );
 
-            // Read the processed video file as buffer
-            const fixedVideoBuffer = await fs.readFile(outputFilePath);
-
-            // Send the video with correct metadata
-            await conn.sendMessage(
-                m.chat, {
-                    video: fixedVideoBuffer,
-                    mimetype: "video/mp4",
-                    fileName: video.filename,
-                    caption: caption,
-                    mentions: [m.sender],
-                }, {
-                    quoted: m
-                }
-            );
-
-            await fs.unlink(tempFilePath);
-            await fs.unlink(outputFilePath);
-        } else {
-            throw 'No available video found';
-        }
+        await fs.unlink(tempFilePath);
+        await fs.unlink(outputFilePath);
     } catch (error) {
-        console.error('Handler Error:', error);
-        conn.reply(m.chat, `An error occurred: ${error.message || error}`, m);
+        console.error(error);
+        await conn.sendMessage(
+            m.chat,
+            { text: ` Terjadi error: ${error.message || error}` },
+            { quoted: m }
+        );
     }
 };
 
-handler.help = ['bilibili'];
-handler.tags = ['downloader'];
+handler.help = ["bilibili <url>"];
+handler.tags = ["downloader"];
 handler.command = /^(bili(bili)?)$/i;
+handler.limit = 2;
+handler.register = true;
 
-handler.limit = 2
-handler.register = true
-
-export default handler
+export default handler;
