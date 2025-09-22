@@ -34,12 +34,11 @@ let handler = async (m, { conn, args }) => {
             responseType: "arraybuffer",
         });
 
-        // Kirim hasil pakai sendMessage
         await conn.sendMessage(
             m.chat,
             {
                 image: response.data,
-                caption: `✅ Filter diterapkan: ${filter}`,
+                caption: ` Filter diterapkan: ${filter}`,
             },
             { quoted: m }
         );
