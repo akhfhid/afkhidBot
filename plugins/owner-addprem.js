@@ -40,7 +40,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         );
     }
 
-    let txt = text.split(" ")[1]; /
+    let txt = text.split(" ")[1]; 
     var jumlahHari = 86400000 * txt;
     var now = new Date() * 1;
 

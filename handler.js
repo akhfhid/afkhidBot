@@ -108,6 +108,7 @@ export async function handler(chatUpdate) {
         } catch (e) {
             console.error(e)
         }
+
         if (opts['pconly'] && m.chat.endsWith('g.us')) return
         if (opts['gconly'] && !m.chat.endsWith('g.us')) return
         if (typeof m.text !== 'string') m.text = ''
