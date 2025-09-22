@@ -11,16 +11,17 @@ let handler = async (m, { conn, args }) => {
         let q = m.quoted ? m.quoted : m;
         let mime = (q.msg || q).mimetype || "";
         if (!mime) {
-            return await conn.sendMessage(m.chat, { text: "⚠️ Kirim atau reply gambar dengan caption .hitamkan" }, { quoted: m });
+            return await conn.sendMessage(m.chat, { text: " Kirim atau reply gambar dengan caption .hitamkan" }, { quoted: m });
         }
+
         let media = await q.download();
         if (!media) {
-            return await conn.sendMessage(m.chat, { text: "❌ Gagal mendownload media!" }, { quoted: m });
+            return await conn.sendMessage(m.chat, { text: " Gagal mendownload media!" }, { quoted: m });
         }
 
         let cdnResult = await ryzenCDN(media);
         if (!cdnResult || !cdnResult.url) {
-            return await conn.sendMessage(m.chat, { text: "❌ Gagal upload ke RyzenCDN!" }, { quoted: m });
+            return await conn.sendMessage(m.chat, { text: " Gagal upload ke RyzenCDN!" }, { quoted: m });
         }
 
         let url = cdnResult.url;
@@ -29,6 +30,7 @@ let handler = async (m, { conn, args }) => {
         if (!validFilters.includes(filter)) {
             return await conn.sendMessage(m.chat, { text: `Filter tidak valid! Pilihan: ${validFilters.join(", ")}` }, { quoted: m });
         }
+
         let response = await axios.get(`${APIs.ryzumi}/api/ai/negro`, {
             params: { url: url, filter: filter },
             responseType: "arraybuffer",
@@ -46,7 +48,7 @@ let handler = async (m, { conn, args }) => {
     } catch (error) {
         await conn.sendMessage(
             m.chat,
-            { text: `⚠️ Terjadi error: ${error.message || error}` },
+            { text: ` Terjadi error: ${error.message || error}` },
             { quoted: m }
         );
         console.error(error);
