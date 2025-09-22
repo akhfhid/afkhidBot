@@ -28,14 +28,14 @@ let handler = async function (m, { text }) {
 
         // batasi biar ga kepanjangan
         let chordText =
-            a.chord.length > 3000
-                ? a.chord.slice(0, 3000) + "\n\n⚠️ Chord dipotong, terlalu panjang..."
+            a.chord.length > 5000
+                ? a.chord.slice(0, 5000) + "\n\n⚠️ Chord dipotong, terlalu panjang..."
                 : a.chord;
 
         await this.sendMessage(
             m.chat,
             {
-                text: `*🎵 Song:* ${a.title}\n\n*🎸 Chord:*\n\n${chordText}`,
+                text: `*🎵 Song:* ${a.title}\n\n* Chord:*\n\n${chordText}`,
             },
             { quoted: m }
         );
@@ -81,12 +81,12 @@ export async function chord(query) {
                     chord: data.chord,
                 });
             } else {
-                reject("⚠️ Tidak ada hasil untuk: " + query);
+                reject(" Tidak ada hasil untuk: " + query);
             }
         } catch (error) {
             console.error("API ERROR:", error.response?.data || error.message);
             reject(
-                "⚠️ Error fetching data: " +
+                "Error fetching data: " +
                 (error.response?.status || error.message || "Unknown error")
             );
         }
