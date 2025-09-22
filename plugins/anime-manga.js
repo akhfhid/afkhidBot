@@ -1,42 +1,76 @@
-// Update By Xnuvers007
 
-import fetch from 'node-fetch'
+import fetch from "node-fetch";
 
 var handler = async (m, { conn, text }) => {
-    if (!text) throw `*Masukan Judul Manga Yang Ingin Kamu Cari !*`
-    conn.reply(m.chat, 'Sedang mencari manga... Silahkan tunggu', m)
-    let res = await fetch('https://api.jikan.moe/v4/manga?q=' + text)
-    if (!res.ok) throw 'Tidak Ditemukan'
-    let json = await res.json()
-    let { chapters, url, type, score, scored, scored_by, rank, popularity, members, background, status, volumes, synopsis, favorites } = json.data[0]
-    let judul = json.data[0].titles.map(jud => `${jud.title} [${jud.type}]`).join('\n');
-    let xnuvers007 = json.data[0].authors.map(Xnuvers007 => `${Xnuvers007.name} (${Xnuvers007.url})`).join('\n');
-    let genrenya = json.data[0].genres.map(xnvrs007 => `${xnvrs007.name}`).join('\n');
+    try {
+        if (!text) {
+            return await conn.sendMessage(
+                m.chat,
+                { text: "*⚠️ Masukkan Judul Manga Yang Ingin Kamu Cari!*" },
+                { quoted: m }
+            );
+        }
 
-    let animeingfo = `📚 Title: ${judul}
-📑 Chapter: ${chapters}
-✉️ Transmisi: ${type}
-🗂 Status: ${status}
-😎 Genre: ${genrenya}
-🗃 Volumes: ${volumes}
-🌟 Favorite: ${favorites}
-🧮 Score: ${score}
-🧮 Scored: ${scored}
-🧮 Scored BY: ${scored_by}
-🌟 Rank: ${rank}
-🤩 Popularitas: ${popularity}
-👥 Members: ${members}
-⛓️ Url: ${url}
-👨‍🔬 Author: ${xnuvers007}
-📝 Background: ${background}
-💬 Sinopsis: ${synopsis}
-`
-    conn.sendFile(m.chat, json.data[0].images.jpg.image_url, 'manga.jpg', `*MANGA INFO*\n` + animeingfo, m)
-}
-handler.help = ['mangainfo <manga>']
-handler.tags = ['anime']
-handler.command = /^(mangainfo)$/i
+        await conn.sendMessage(
+            m.chat,
+            { text: "⏳ Sedang mencari manga... Silahkan tunggu" },
+            { quoted: m }
+        );
 
-handler.register = true
+        let res = await fetch(`https://api.jikan.moe/v4/manga?q=${encodeURIComponent(text)}`);
+        if (!res.ok) throw "❌ Manga tidak ditemukan!";
 
-export default handler
+        let json = await res.json();
+        let manga = json.data[0];
+        if (!manga) throw "❌ Manga tidak ditemukan!";
+
+        const judul = manga.titles.map(j => `${j.title} [${j.type}]`).join("\n");
+        const penulis = manga.authors.map(a => `${a.name} (${a.url})`).join("\n");
+        const genres = manga.genres.map(g => g.name).join(", ");
+
+        let pesan = `
+📚 *Title:* ${judul}
+📑 *Chapters:* ${manga.chapters || "N/A"}
+✉️ *Type:* ${manga.type || "N/A"}
+🗂 *Status:* ${manga.status || "N/A"}
+😎 *Genre:* ${genres || "N/A"}
+🗃 *Volumes:* ${manga.volumes || "N/A"}
+🌟 *Favorites:* ${manga.favorites || "N/A"}
+🧮 *Score:* ${manga.score || "N/A"}
+🧮 *Scored:* ${manga.scored || "N/A"}
+🧮 *Scored By:* ${manga.scored_by || "N/A"}
+🌟 *Rank:* ${manga.rank || "N/A"}
+🤩 *Popularity:* ${manga.popularity || "N/A"}
+👥 *Members:* ${manga.members || "N/A"}
+⛓️ *URL:* ${manga.url || "N/A"}
+👨‍🔬 *Author:* ${penulis || "N/A"}
+📝 *Background:* ${manga.background || "N/A"}
+💬 *Sinopsis:* ${manga.synopsis || "N/A"}
+`;
+
+        // Kirim gambar dan info sekaligus
+        await conn.sendMessage(
+            m.chat,
+            {
+                image: { url: manga.images.jpg.image_url },
+                caption: pesan,
+            },
+            { quoted: m }
+        );
+    } catch (error) {
+        console.error(error);
+        await conn.sendMessage(
+            m.chat,
+            { text: `⚠️ Terjadi error: ${error.message || error}` },
+            { quoted: m }
+        );
+    }
+};
+
+handler.help = ["mangainfo <manga>"];
+handler.tags = ["anime"];
+handler.command = /^(mangainfo)$/i;
+
+handler.register = true;
+
+export default handler;
