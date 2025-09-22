@@ -1,94 +1,68 @@
-import axios from "axios";
+import fetch from "node-fetch";
 
-function decodeHtml(html) {
-    const entities = {
-        "&quot;": '"',
-        "&apos;": "'",
-        "&lt;": "<",
-        "&gt;": ">",
-        "&amp;": "&",
-        "&#8211;": "–",
-        "&#8212;": "—",
-        "&#160;": " ",
-    };
-
-    return html.replace(/&[a-zA-Z0-9#]+;/g, (match) => entities[match] || match);
-}
-
-let handler = async function (m, { text }) {
-    if (!text)
-        return this.sendMessage(
+const handler = async (m, { usedPrefix, command, conn, args }) => {
+    if (!args[0]) {
+        return await conn.sendMessage(
             m.chat,
-            { text: "⚠️ Input query, contoh: .chord sober" },
+            { text: `*Example:* ${usedPrefix}${command} Yagami Light` },
             { quoted: m }
         );
+    }
+
+    await conn.sendMessage(m.chat, { text: wait }, { quoted: m });
 
     try {
-        let a = await chord(text);
-
-        // batasi biar ga kepanjangan
-        let chordText =
-            a.chord.length > 5000
-                ? a.chord.slice(0, 5000) + "\n\n⚠️ Chord dipotong, terlalu panjang..."
-                : a.chord;
-
-        await this.sendMessage(
-            m.chat,
-            {
-                text: `*🎵 Song:* ${a.title}\n\n* Chord:*\n\n${chordText}`,
-            },
-            { quoted: m }
+        const q = encodeURIComponent(args.join(" "));
+        const response = await fetch(
+            `${APIs.ryzumi}/api/search/pinterest?query=${q}`
         );
+        const data = await response.json();
 
-        console.log("✅ Chord berhasil dikirim:", a.title);
+        if (!Array.isArray(data) || data.length < 1) {
+            return await conn.sendMessage(
+                m.chat,
+                { text: " Error, Foto Tidak Ditemukan" },
+                { quoted: m }
+            );
+        }
+        const results = data
+            .sort(() => Math.random() - 0.5)
+            .slice(0, Math.min(5, data.length));
+
+        for (const result of results) {
+            const res = await fetch(result.directLink, {
+                headers: {
+                    "User-Agent":
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+                    Referer: result.directLink,
+                },
+            });
+            if (!res.ok) continue;
+            const buffer = await res.buffer();
+
+            await conn.sendMessage(
+                m.chat,
+                {
+                    image: buffer,
+                    caption: `🔗 ${result.link}`,
+                },
+                { quoted: m }
+            );
+        }
     } catch (e) {
-        await this.sendMessage(
+        console.error(e);
+        await conn.sendMessage(
             m.chat,
-            {
-                text: typeof e === "string" ? e : "⚠️ Gagal mengambil chord.",
-            },
+            { text: `⚠️ Error: ${e.message || e}` },
             { quoted: m }
         );
-        console.error("❌ ERROR chord:", e);
     }
 };
 
-handler.help = ["chord <judul lagu>"];
-handler.tags = ["tools"];
-handler.command = /^(chord)$/i;
-
+handler.help = ["pinterest"];
+handler.tags = ["internet"];
+handler.command = /^pin(terest)?$/i;
+handler.limit = 10;
 handler.register = true;
-// handler.limit = true;
 
 export default handler;
-
-export async function chord(query) {
-    return new Promise(async (resolve, reject) => {
-        const url = `https://api.ryzumi.vip/api/search/chord?query=${encodeURIComponent(
-            query
-        )}`;
-
-        try {
-            let { data } = await axios.get(url, {
-                headers: { accept: "application/json" },
-            });
-
-            console.log("API RESPONSE:", data);
-
-            if (data && data.title && data.chord) {
-                resolve({
-                    title: decodeHtml(data.title),
-                    chord: data.chord,
-                });
-            } else {
-                reject(" Tidak ada hasil untuk: " + query);
-            }
-        } catch (error) {
-            console.error("API ERROR:", error.response?.data || error.message);
-            reject(
-                "Error fetching data: " +
-                (error.response?.status || error.message || "Unknown error")
-            );
-        }
-    });
-}
