@@ -3,7 +3,7 @@ import axios from 'axios'
 var handler = async (m, { conn, text }) => {
   if (!text) throw `*_Masukkan Nama Mahasiswa/Siswa Yang Ingin Kamu Cari !_*`;
 
-  conn.reply(m.chat, 'Sedang mencari orangnya... Silahkan tunggu.', m);
+  await conn.sendMessage(m.chat, { text: 'Sedang mencari orangnya... Silahkan tunggu.' }, { quoted: m });
 
   const url = `${APIs.ryzumi}/api/search/mahasiswa?query=${encodeURIComponent(text)}`;
 
@@ -27,10 +27,10 @@ var handler = async (m, { conn, text }) => {
       message += `${index + 1}. Nama: ${nama}\n   NIM: ${nim}\n   Perguruan Tinggi: ${namaPt}\n   Program Studi: ${namaProdi}\n\n`;
     });
 
-    conn.reply(m.chat, message, m);
+    await conn.sendMessage(m.chat, { text: message }, { quoted: m });
   } catch (error) {
     console.error(error);
-    conn.reply(m.chat, `Terjadi kesalahan: ${error.message || error}`, m);
+    await conn.sendMessage(m.chat, { text: `Terjadi kesalahan: ${error.message || error}` }, { quoted: m });
   }
 };
 

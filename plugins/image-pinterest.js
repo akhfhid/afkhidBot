@@ -3,15 +3,17 @@ import pkg from '@whiskeysockets/baileys'
 const { generateWAMessageContent, generateWAMessageFromContent, proto } = pkg
 
 const handler = async (m, { usedPrefix, command, conn, args }) => {
-  if (!args[0]) throw `*Example:* ${usedPrefix}${command} Nao Tomori`;
-  m.reply(wait);
+  if (!args[0]) throw `*Example:* ${usedPrefix}${command} Yagami Light`;
+  await conn.sendMessage(m.chat, { text: wait }, { quoted: m });
+
 
   try {
     const q = encodeURIComponent(args.join(' '));
     const response = await fetch(`${APIs.ryzumi}/api/search/pinterest?query=${q}`);
     const data = await response.json();
     if (!Array.isArray(data) || data.length < 1) {
-      return m.reply('Error, Foto Tidak Ditemukan');
+      return await conn.sendMessage(m.chat, { text: 'Error, Foto Tidak Ditemukan' }, { quoted: m });
+
     }
 
     const results = data.sort(() => Math.random() - 0.5).slice(0, Math.min(5, data.length));
@@ -89,7 +91,7 @@ const handler = async (m, { usedPrefix, command, conn, args }) => {
 handler.help = ['pinterest'];
 handler.tags = ['internet'];
 handler.command = /^pin(terest)?$/i;
-handler.limit = 2;
+handler.limit = 10;
 handler.register = true;
 
 export default handler;
