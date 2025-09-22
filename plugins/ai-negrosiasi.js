@@ -13,7 +13,6 @@ let handler = async (m, { conn, args }) => {
         if (!mime) {
             return await conn.sendMessage(m.chat, { text: " Kirim atau reply gambar dengan caption .hitamkan" }, { quoted: m });
         }
-
         let media = await q.download();
         if (!media) {
             return await conn.sendMessage(m.chat, { text: " Gagal mendownload media!" }, { quoted: m });
