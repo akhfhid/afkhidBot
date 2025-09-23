@@ -1,7 +1,8 @@
 import fetch from "node-fetch"
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-    if (!text) throw `This command generates images from text prompts.\n\nExample usage:\n${usedPrefix + command} anime girl with glasses, pink short hair, in a uniform, anime style, full body, bokeh`;
+    // if (!text) throw `This command generates images from text prompts.\n\nExample usage:\n${usedPrefix + command} anime girl with glasses, pink short hair, in a uniform, anime style, full body, bokeh`;
+    if (!text) conn.sendMessage(m.chat, { text: `Example:\n${usedPrefix + command}  girl with glasses, pink short hair, in a uniform, full body, bokeh` }, { quoted: m });
     await m.reply(wait);
     const apiUrl = `${APIs.ryzumi}/api/ai/text2img?prompt=${encodeURIComponent(text)}`;
     try {
